@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"io/ioutil"
+	"os"
 	"strings"
 	"testing"
 )
@@ -18,7 +19,10 @@ func TestParseContent(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	result := parseContent(input)
+	result, err := parseContent(input, "")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	expected, err := ioutil.ReadFile(goldenFile)
 	if err != nil {
@@ -35,7 +39,7 @@ func TestParseContent(t *testing.T) {
 func TestRun(t *testing.T) {
 	var mockStdOut bytes.Buffer
 
-	if err := run(inputFile, &mockStdOut, true); err != nil {
+	if err := run(inputFile, "", &mockStdOut, true); err != nil {
 		t.Fatal(err)
 	}
 
@@ -56,5 +60,7 @@ func TestRun(t *testing.T) {
 		t.Logf("result:\n%s\n", result)
 		t.Error("Result content does not match golden file")
 	}
+
+	os.Remove(resultFile)
 
 }
