@@ -1,4 +1,4 @@
-module mdp
+module github.com/dev-maz/mdp
 
 go 1.26.5
 
